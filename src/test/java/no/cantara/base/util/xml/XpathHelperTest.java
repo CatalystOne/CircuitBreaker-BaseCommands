@@ -1,9 +1,9 @@
-package no.cantara.base.util.soap;
+package no.cantara.base.util.xml;
 
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import static no.cantara.base.util.soap.XpathHelper.findValue;
+import static no.cantara.base.util.xml.XpathHelper.findValue;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNotNull;
 

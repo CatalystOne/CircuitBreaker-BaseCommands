@@ -1,4 +1,4 @@
-package no.cantara.base.util.soap;
+package no.cantara.base.util.xml;
 
 
 import org.slf4j.Logger;
