@@ -48,10 +48,9 @@
     </developers>
 
     <scm>
-        <developerConnection>scm:git:ssh://git@github.com/cantara/Whydah-Java-SDK.git</developerConnection>
-        <connection>scm:git:https://github.com/cantara/Whydah-Java-SDK.git</connection>
-        <url>https://github.com/cantara/Whydah-Java-SDK</url>
-        <tag>Whydah-Java-SDK-2.2-rc-12</tag>
+        <developerConnection>scm:git:ssh://git@github.com/cantara/Hystrix-BaseCommands.git</developerConnection>
+        <connection>scm:git:https://github.com/cantara/Hystrix-BaseCommands.git</connection>
+        <url>https://github.com/cantara/Hystrix-BaseCommands</url>
     </scm>
 
 
@@ -80,7 +79,7 @@
         <dependency>
             <groupId>com.netflix.hystrix</groupId>
             <artifactId>hystrix-core</artifactId>
-            <version>1.5.5</version>
+            <version>1.5.6</version>
             <exclusions>
                 <exclusion>
                     <groupId>commons-logging</groupId>
