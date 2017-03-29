@@ -20,8 +20,6 @@ import java.util.Map;
 public abstract class BaseHttpDeleteHystrixCommand<R> extends HystrixCommand<R> {
     protected Logger log;
     protected URI serviceUri;
-    //    protected String myAppTokenId="";
-//    protected String myAppTokenXml="";
     protected String TAG = "";
     protected HttpRequest request;
 
@@ -102,7 +100,7 @@ public abstract class BaseHttpDeleteHystrixCommand<R> extends HystrixCommand<R> 
                 uriString += getTargetPath();
             }
 
-            log.trace("TAG" + " - whydahServiceUri={} ", uriString);
+            log.trace("TAG" + " - serviceUri={} ", uriString);
 
 
 
@@ -112,8 +110,8 @@ public abstract class BaseHttpDeleteHystrixCommand<R> extends HystrixCommand<R> 
                 request = HttpRequest.get(uriString);
             }
 
-            request.trustAllCerts();
-            request.trustAllHosts();
+//            request.trustAllCerts();
+//            request.trustAllHosts();
 
             if(getFormParameters()!=null && !getFormParameters().isEmpty()){
                 request.contentType(HttpSender.APPLICATION_FORM_URLENCODED);

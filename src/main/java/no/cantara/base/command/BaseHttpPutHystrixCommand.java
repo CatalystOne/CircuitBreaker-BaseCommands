@@ -20,8 +20,6 @@ import java.util.Map;
 public abstract class BaseHttpPutHystrixCommand<R> extends HystrixCommand<R> {
     protected Logger log;
     protected URI serviceUri;
-    //    protected String myAppTokenId="";
-//    protected String myAppTokenXml="";
     protected String TAG = "";
     protected HttpRequest request;
 
