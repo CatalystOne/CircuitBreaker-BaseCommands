@@ -16,7 +16,7 @@ import java.util.Map;
 /**
  * Created by baardl on 2017-03-03.
  */
-public abstract class BaseHttpPostHystrixCommand<R> extends HystrixCommand<R> {
+public abstract class BaseHttpGetHystrixCommand<R> extends HystrixCommand<R> {
     protected Logger log;
     protected URI serviceUri;
     //    protected String myAppTokenId="";
@@ -24,15 +24,15 @@ public abstract class BaseHttpPostHystrixCommand<R> extends HystrixCommand<R> {
     protected String TAG = "";
     protected HttpRequest request;
 
-    protected BaseHttpPostHystrixCommand(URI serviceUri, String hystrixGroupKey, int hystrixExecutionTimeOut) {
-        super(HystrixCommand.Setter.withGroupKey(HystrixCommandGroupKey.Factory.asKey(hystrixGroupKey)).
+    protected BaseHttpGetHystrixCommand(URI serviceUri, String hystrixGroupKey, int hystrixExecutionTimeOut) {
+        super(Setter.withGroupKey(HystrixCommandGroupKey.Factory.asKey(hystrixGroupKey)).
                 andCommandPropertiesDefaults(HystrixCommandProperties.Setter()
                         .withExecutionTimeoutInMilliseconds(hystrixExecutionTimeOut)));
         init(serviceUri, hystrixGroupKey);
     }
 
-    protected BaseHttpPostHystrixCommand(URI serviceUri, String hystrixGroupKey) {
-        super(HystrixCommand.Setter.withGroupKey(HystrixCommandGroupKey.Factory.asKey(hystrixGroupKey)));
+    protected BaseHttpGetHystrixCommand(URI serviceUri, String hystrixGroupKey) {
+        super(Setter.withGroupKey(HystrixCommandGroupKey.Factory.asKey(hystrixGroupKey)));
         init(serviceUri, hystrixGroupKey);
     }
 
@@ -47,33 +47,36 @@ public abstract class BaseHttpPostHystrixCommand<R> extends HystrixCommand<R> {
 
     @Override
     protected R run() {
-        return doPostCommand();
+        return doGetCommand();
 
     }
-
-    protected R doPostCommand() {
-        try {
+    protected R doGetCommand() {
+        try{
             String uriString = serviceUri.toString();
-            if (getTargetPath() != null) {
+            if(getTargetPath()!=null){
                 uriString += getTargetPath();
             }
 
-            log.trace("TAG" + " - serviceUri={} ", uriString);
+            log.trace("TAG" + " - whydahServiceUri={} ", uriString);
 
-            if (getQueryParameters() != null && getQueryParameters().length != 0) {
-                request = HttpRequest.post(uriString, true, getQueryParameters());
+
+
+            if(getQueryParameters()!=null && getQueryParameters().length!=0){
+                request = HttpRequest.get(uriString, true, getQueryParameters());
             } else {
-                request = HttpRequest.post(uriString);
+                request = HttpRequest.get(uriString);
             }
+
             request.trustAllCerts();
             request.trustAllHosts();
 
-            if (getFormParameters() != null && !getFormParameters().isEmpty()) {
+            if(getFormParameters()!=null && !getFormParameters().isEmpty()){
                 request.contentType(HttpSender.APPLICATION_FORM_URLENCODED);
                 request.form(getFormParameters());
             }
 
             request = dealWithRequestBeforeSend(request);
+
 
             responseBody = request.bytes();
             int statusCode = request.code();
@@ -87,9 +90,9 @@ public abstract class BaseHttpPostHystrixCommand<R> extends HystrixCommand<R> {
                     onFailed(responseAsText, statusCode);
                     return dealWithFailedResponse(responseAsText, statusCode);
             }
-        } catch (Exception ex) {
+        } catch(Exception ex){
             ex.printStackTrace();
-            throw new RuntimeException("TAG" + " - Application authentication failed to execute");
+            throw new RuntimeException("TAG" +  " - Application authentication failed to execute");
         }
     }
 
