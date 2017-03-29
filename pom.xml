@@ -45,6 +45,16 @@
             <organization>Capra Consulting AS</organization>
             <organizationUrl>http://www.capraconsulting.no/</organizationUrl>
         </developer>
+        <developer>
+            <id>huyd</id>
+            <name>Huy Do</name>
+            <email>misterhuydo@gmail.com</email>
+            <roles>
+                <role>Developer</role>
+            </roles>
+            <organization>Capra Consulting AS</organization>
+            <organizationUrl>http://www.capraconsulting.no/</organizationUrl>
+        </developer>
     </developers>
 
     <scm>
