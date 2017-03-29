@@ -1,4 +1,4 @@
-package no.cantara.base.command.json;
+package no.cantara.base.util.json;
 
 
 import com.jayway.jsonpath.Configuration;
