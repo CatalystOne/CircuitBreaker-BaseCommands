@@ -17,7 +17,7 @@ import java.util.Map;
  * Copy from https://github.com/Cantara/Whydah-Java-SDK
  * Created by baardl on 2017-03-03.
  */
-public abstract class BaseHttpGetHystrixCommand<R> extends HystrixCommand<R> {
+public abstract class BaseHttpDeleteHystrixCommand<R> extends HystrixCommand<R> {
     protected Logger log;
     protected URI serviceUri;
     //    protected String myAppTokenId="";
@@ -25,14 +25,14 @@ public abstract class BaseHttpGetHystrixCommand<R> extends HystrixCommand<R> {
     protected String TAG = "";
     protected HttpRequest request;
 
-    protected BaseHttpGetHystrixCommand(URI serviceUri, String hystrixGroupKey, int hystrixExecutionTimeOut) {
+    protected BaseHttpDeleteHystrixCommand(URI serviceUri, String hystrixGroupKey, int hystrixExecutionTimeOut) {
         super(Setter.withGroupKey(HystrixCommandGroupKey.Factory.asKey(hystrixGroupKey)).
                 andCommandPropertiesDefaults(HystrixCommandProperties.Setter()
                         .withExecutionTimeoutInMilliseconds(hystrixExecutionTimeOut)));
         init(serviceUri, hystrixGroupKey);
     }
 
-    protected BaseHttpGetHystrixCommand(URI serviceUri, String hystrixGroupKey) {
+    protected BaseHttpDeleteHystrixCommand(URI serviceUri, String hystrixGroupKey) {
         super(Setter.withGroupKey(HystrixCommandGroupKey.Factory.asKey(hystrixGroupKey)));
         init(serviceUri, hystrixGroupKey);
     }
@@ -48,8 +48,52 @@ public abstract class BaseHttpGetHystrixCommand<R> extends HystrixCommand<R> {
 
     @Override
     protected R run() {
-        return doGetCommand();
+        return doDeleteCommand();
 
+    }
+
+    protected R doDeleteCommand() {
+        try {
+            String uriString = serviceUri.toString();
+            if (getTargetPath() != null) {
+                uriString += getTargetPath();
+            }
+
+            log.trace("TAG" + " - whydahServiceUri={} myAppTokenId={}", uriString);
+
+            if (getQueryParameters() != null && getQueryParameters().length != 0) {
+                request = HttpRequest.delete(uriString, true, getQueryParameters());
+            } else {
+                request = HttpRequest.delete(uriString);
+            }
+            request.trustAllCerts();
+            request.trustAllHosts();
+
+            if (getFormParameters() != null && !getFormParameters().isEmpty()) {
+                request.contentType(HttpSender.APPLICATION_FORM_URLENCODED);
+                request.form(getFormParameters());
+            }
+
+            request = dealWithRequestBeforeSend(request);
+
+            responseBody = request.bytes();
+            int statusCode = request.code();
+            String responseAsText = StringConv.UTF8(responseBody);
+
+            switch (statusCode) {
+                case java.net.HttpURLConnection.HTTP_OK:
+                    onCompleted(responseAsText);
+                    return dealWithResponse(responseAsText);
+                default:
+                    onFailed(responseAsText, statusCode);
+                    return dealWithFailedResponse(responseAsText, statusCode);
+            }
+
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            throw new RuntimeException("TAG" + " - Application authentication failed to execute");
+        }
     }
     protected R doGetCommand() {
         try{

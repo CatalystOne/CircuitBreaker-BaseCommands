@@ -14,6 +14,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
+ * Copy from https://github.com/Cantara/Whydah-Java-SDK
  * Created by baardl on 2017-03-03.
  */
 public abstract class BaseHttpPostHystrixCommand<R> extends HystrixCommand<R> {
