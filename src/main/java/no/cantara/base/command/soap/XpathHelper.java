@@ -13,6 +13,8 @@ import javax.xml.xpath.XPathExpression;
 import javax.xml.xpath.XPathFactory;
 import java.io.StringReader;
 
+import static no.cantara.base.util.StringHelper.hasContent;
+
 public class XpathHelper {
 
     private static final Logger log = LoggerFactory.getLogger(XpathHelper.class);
@@ -20,17 +22,19 @@ public class XpathHelper {
 
     public static String findValue(String xmlString, String expression) {
         String value = "";
-        try {
-            DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-            DocumentBuilder db = dbf.newDocumentBuilder();
-            Document doc = db.parse(new InputSource(new StringReader(xmlString)));
-            XPath xPath = XPathFactory.newInstance().newXPath();
+        if (hasContent(xmlString) && hasContent(expression)) {
+            try {
+                DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+                DocumentBuilder db = dbf.newDocumentBuilder();
+                Document doc = db.parse(new InputSource(new StringReader(xmlString)));
+                XPath xPath = XPathFactory.newInstance().newXPath();
 
 
-            XPathExpression xPathExpression = xPath.compile(expression);
-            value = xPathExpression.evaluate(doc);
-        } catch (Exception e) {
-            log.warn("Failed to parse xml. Expression {}, xml {}, ", expression, xmlString, e);
+                XPathExpression xPathExpression = xPath.compile(expression);
+                value = xPathExpression.evaluate(doc);
+            } catch (Exception e) {
+                log.warn("Failed to parse xml. Expression {}, xml {}, ", expression, xmlString, e);
+            }
         }
         return value;
     }
