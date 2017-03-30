@@ -3,7 +3,7 @@
 
     <groupId>no.cantara.base</groupId>
     <artifactId>Hystrix-BaseCommands</artifactId>
-    <version>0.1.3-SNAPSHOT</version>
+    <version>0.1.3</version>
     <packaging>jar</packaging>
 
     <name>Hystrix-BaseCommands</name>
@@ -60,7 +60,7 @@
         <developerConnection>scm:git:ssh://git@github.com/cantara/Hystrix-BaseCommands.git</developerConnection>
         <connection>scm:git:https://github.com/cantara/Hystrix-BaseCommands.git</connection>
         <url>https://github.com/cantara/Hystrix-BaseCommands</url>
-      <tag>HEAD</tag>
+      <tag>Hystrix-BaseCommands-0.1.3</tag>
   </scm>
 
 
