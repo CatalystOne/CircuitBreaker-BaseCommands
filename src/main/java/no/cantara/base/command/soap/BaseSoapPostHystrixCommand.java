@@ -20,6 +20,12 @@ public abstract class BaseSoapPostHystrixCommand extends BaseHttpPostHystrixComm
         this.bodyXml = bodyXml;
     }
 
+    public BaseSoapPostHystrixCommand(URI serviceUri, String hystrixGroupKey, String headerXml, String bodyXml, int timeoutMillis) {
+        super(serviceUri, hystrixGroupKey, timeoutMillis);
+        this.headerXml = headerXml;
+        this.bodyXml = bodyXml;
+    }
+
     @Override
     protected HttpRequest dealWithRequestBeforeSend(HttpRequest request) {
         super.dealWithRequestBeforeSend(request);
@@ -31,4 +37,11 @@ public abstract class BaseSoapPostHystrixCommand extends BaseHttpPostHystrixComm
 
     protected abstract String buildSoapXml();
 
+    public String getHeaderXml() {
+        return headerXml;
+    }
+
+    public String getBodyXml() {
+        return bodyXml;
+    }
 }

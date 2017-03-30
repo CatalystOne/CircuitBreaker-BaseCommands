@@ -39,4 +39,19 @@ public class XpathHelper {
         return value;
     }
 
+    public static String findXmlTree(String xml, String nodeName) {
+        String tree = null;
+        if (hasContent(xml) && hasContent(nodeName)){
+            int start = xml.indexOf("<" + nodeName);
+            if (start > 0) {
+                int last = xml.indexOf("</" + nodeName, start);
+                if (last >0) {
+                    int end = last + nodeName.length() + 3;
+                    tree = xml.substring(start,end );
+                }
+            }
+        }
+        return tree;
+    }
+
 }
