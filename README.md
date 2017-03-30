@@ -12,12 +12,9 @@ Base Commands to be extended for your use for HTTP, REST and SOAP over Hystrix
 */
 public class CommandGetOauth2ProtectedPing extends BaseHttpGetHystrixCommand<String> {
 
-    String uri;
-
     public CommandGetOauth2ProtectedPing(String uri) {
 
         super(URI.create(uri), "oauth-ping-group");
-        this.uri = uri;
     }
 
 
