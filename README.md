@@ -28,6 +28,15 @@ public class CommandGetOauth2ProtectedPing extends BaseHttpGetHystrixCommand<Str
         return "/ping";
     }
 }
+
+//
+//
+// Use of the CommandGetOauth2ProtectedPing command above
+//
+log.trace("Calling {}", testServer.getUrl());
+String returned_data = new CommandGetOauth2ProtectedPing(testServer.getUrl()).execute();
+log.debug("Returned: " + returned_data);
+
 ```
 
 
