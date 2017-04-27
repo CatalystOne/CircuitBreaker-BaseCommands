@@ -9,56 +9,24 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.io.UnsupportedEncodingException;
-import java.net.URI;
 
 import static com.xebialabs.restito.builder.stub.StubHttp.whenHttp;
 import static com.xebialabs.restito.builder.verify.VerifyHttp.verifyHttp;
 import static com.xebialabs.restito.semantics.Action.status;
-import static com.xebialabs.restito.semantics.Action.stringContent;
 import static com.xebialabs.restito.semantics.Condition.*;
 import static io.restassured.RestAssured.expect;
-import static org.junit.Assert.assertEquals;
 
 /**
  * Created by baardl on 2017-04-27.
  */
-public class BaseHttpPostHystrixCommandTest {
+public class SimpleRequestsTest {
+
     private StubServer server;
-    private BaseHttpPostHystrixCommand baseHttpPostHystrixCommand;
-    private int port;
 
     @Before
     public void start() {
         server = new StubServer().run();
         RestAssured.port = server.getPort();
-        this.port = server.getPort();
-
-    }
-
-    @Test
-    public void testDoPostCommand() throws Exception {
-        // Restito
-        whenHttp(server).
-//                match(contentType("applicatin/json"))
-                match(post("/postJson"), withHeader("CONTENT-TYPE","application/json")).
-                then(status(HttpStatus.OK_200), stringContent("Updated Ok") );
-
-        URI uri = URI.create("http://localhost:" + port );
-        baseHttpPostHystrixCommand = new BaseHttpPostHystrixCommand(uri, "test") {
-            @Override
-            protected String getTargetPath() {
-                return "/postJson";
-            }
-
-            @Override
-            protected String getJsonBody() {
-                return "{\"test\": \"value\"}";
-            }
-        };
-
-        String response = (String) baseHttpPostHystrixCommand.doPostCommand();
-        assertEquals("Updated Ok", response);
-
     }
 
     @After
@@ -82,5 +50,4 @@ public class BaseHttpPostHystrixCommandTest {
                 uri("/demo")
         );
     }
-
 }
