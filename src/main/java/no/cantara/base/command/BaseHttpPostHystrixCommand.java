@@ -77,13 +77,14 @@ public abstract class BaseHttpPostHystrixCommand<R> extends HystrixCommand<R> {
                 int statusCode = request.code();
                 log.info("Status Code {}. Request {}", statusCode, request);
             } else if (getFormParameters() != null && !getFormParameters().isEmpty()) {
-                request.contentType(HttpSender.APPLICATION_FORM_URLENCODED);
+//                request.contentType(HttpSender.APPLICATION_FORM_URLENCODED);
                 request.form(getFormParameters());
                 request = dealWithRequestBeforeSend(request);
             }
 
             responseBody = request.bytes();
             int statusCode = request.code();
+            log.debug("Headers {}", request.headers());
             String responseAsText = StringConv.UTF8(responseBody);
 
             switch (statusCode) {
@@ -96,7 +97,7 @@ public abstract class BaseHttpPostHystrixCommand<R> extends HystrixCommand<R> {
             }
         } catch (Exception ex) {
             ex.printStackTrace();
-            throw new RuntimeException("TAG" + " - Application authentication failed to execute");
+            throw new RuntimeException("TAG" + " - doPost failed to execute. Reson: " + ex.getMessage());
         }
     }
 

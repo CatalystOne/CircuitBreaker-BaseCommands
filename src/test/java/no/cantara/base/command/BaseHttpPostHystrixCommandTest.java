@@ -10,6 +10,8 @@ import org.junit.Test;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
+import java.util.HashMap;
+import java.util.Map;
 
 import static com.xebialabs.restito.builder.stub.StubHttp.whenHttp;
 import static com.xebialabs.restito.builder.verify.VerifyHttp.verifyHttp;
@@ -38,11 +40,11 @@ public class BaseHttpPostHystrixCommandTest {
     }
 
     @Test
-    public void testDoPostCommand() throws Exception {
+    public void testDoPostCommandJson() throws Exception {
         // Restito
         whenHttp(server).
 //                match(contentType("applicatin/json"))
-                match(post("/postJson"), withHeader("CONTENT-TYPE","application/json")).
+        match(post("/postJson"), withHeader("CONTENT-TYPE",HttpSender.APPLICATION_JSON)).
                 then(status(HttpStatus.OK_200), stringContent("Updated Ok") );
 
 
@@ -55,6 +57,35 @@ public class BaseHttpPostHystrixCommandTest {
             @Override
             protected String getJsonBody() {
                 return "{\"test\": \"value\"}";
+            }
+        };
+
+        String response = (String) baseHttpPostHystrixCommand.doPostCommand();
+        assertEquals("Updated Ok", response);
+
+    }
+
+    @Test
+    public void testDoPostCommandFormParams() throws Exception {
+        // Restito
+        whenHttp(server).
+//                match(contentType("applicatin/json"))
+        match(post("/postForm"), withHeader("CONTENT-TYPE",HttpSender.APPLICATION_FORM_URLENCODED +"; charset=UTF-8")).
+//        match(post("/postForm")).
+                then(status(HttpStatus.OK_200), stringContent("Updated Ok") );
+
+
+        Map<String,String> formParams = new HashMap<>();
+        formParams.put("test", "value");
+        baseHttpPostHystrixCommand = new BaseHttpPostHystrixCommand(uri, "test") {
+            @Override
+            protected String getTargetPath() {
+                return "/postForm";
+            }
+
+            @Override
+            protected Map<String, String> getFormParameters() {
+                return formParams;
             }
         };
 
