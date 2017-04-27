@@ -85,11 +85,6 @@
             <artifactId>http-request</artifactId>
             <version>6.0</version>
         </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-jdbc</artifactId>
-            <version>4.2.5.RELEASE</version>
-        </dependency>
 
         <dependency>
             <groupId>com.netflix.hystrix</groupId>
@@ -115,6 +110,12 @@
         </dependency>
 
         <!--TEST-->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-jdbc</artifactId>
+            <version>4.2.5.RELEASE</version>
+            <scope>test</scope>
+        </dependency>
         <dependency>
             <groupId>org.testng</groupId>
             <artifactId>testng</artifactId>
