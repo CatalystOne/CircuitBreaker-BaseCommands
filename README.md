@@ -8,7 +8,7 @@ Base Commands to be extended for your use for HTTP, REST and SOAP over Hystrix
 ```java
 
 /**
-* A simple example Command extending BaseHttpGetHystrixCommand
+*domainexample
 */
 public class CommandGetOauth2ProtectedPing extends BaseHttpGetHystrixCommand<String> {
 
