@@ -72,14 +72,15 @@ public abstract class BaseHttpPostHystrixCommand<R> extends HystrixCommand<R> {
             String jsonBody = getJsonBody();
             if (hasContent(jsonBody)) {
                 request.contentType(HttpSender.APPLICATION_JSON);
+                request = dealWithRequestBeforeSend(request);
                 request = request.send(jsonBody);
-
+                int statusCode = request.code();
+                log.info("Status Code {}. Request {}", statusCode, request);
             } else if (getFormParameters() != null && !getFormParameters().isEmpty()) {
                 request.contentType(HttpSender.APPLICATION_FORM_URLENCODED);
                 request.form(getFormParameters());
+                request = dealWithRequestBeforeSend(request);
             }
-
-            request = dealWithRequestBeforeSend(request);
 
             responseBody = request.bytes();
             int statusCode = request.code();
