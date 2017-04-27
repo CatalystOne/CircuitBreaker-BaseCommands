@@ -26,12 +26,14 @@ public class BaseHttpPostHystrixCommandTest {
     private StubServer server;
     private BaseHttpPostHystrixCommand baseHttpPostHystrixCommand;
     private int port;
+    private URI uri;
 
     @Before
     public void start() {
         server = new StubServer().run();
         RestAssured.port = server.getPort();
         this.port = server.getPort();
+        uri = URI.create("http://localhost:" + port );
 
     }
 
@@ -43,7 +45,7 @@ public class BaseHttpPostHystrixCommandTest {
                 match(post("/postJson"), withHeader("CONTENT-TYPE","application/json")).
                 then(status(HttpStatus.OK_200), stringContent("Updated Ok") );
 
-        URI uri = URI.create("http://localhost:" + port );
+
         baseHttpPostHystrixCommand = new BaseHttpPostHystrixCommand(uri, "test") {
             @Override
             protected String getTargetPath() {
