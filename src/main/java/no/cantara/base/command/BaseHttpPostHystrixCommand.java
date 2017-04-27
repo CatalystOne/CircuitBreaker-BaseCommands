@@ -13,6 +13,8 @@ import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
 
+import static no.cantara.base.util.StringHelper.hasContent;
+
 /**
  * Copy from https://github.com/Cantara/Whydah-Java-SDK
  * Created by baardl on 2017-03-03.
@@ -67,7 +69,12 @@ public abstract class BaseHttpPostHystrixCommand<R> extends HystrixCommand<R> {
             request.trustAllCerts();
             request.trustAllHosts();
 
-            if (getFormParameters() != null && !getFormParameters().isEmpty()) {
+            String jsonBody = getJsonBody();
+            if (hasContent(jsonBody)) {
+                request.contentType(HttpSender.APPLICATION_JSON);
+                request = request.send(jsonBody);
+
+            } else if (getFormParameters() != null && !getFormParameters().isEmpty()) {
                 request.contentType(HttpSender.APPLICATION_FORM_URLENCODED);
                 request.form(getFormParameters());
             }
@@ -123,6 +130,10 @@ public abstract class BaseHttpPostHystrixCommand<R> extends HystrixCommand<R> {
     }
 
     protected abstract String getTargetPath();
+
+    protected String getJsonBody() {
+        return null;
+    }
 
     protected Map<String, String> getFormParameters() {
         return new HashMap<String, String>();
