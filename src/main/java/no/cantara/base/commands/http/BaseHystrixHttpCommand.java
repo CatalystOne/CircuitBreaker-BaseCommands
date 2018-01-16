@@ -81,8 +81,10 @@ public abstract class BaseHystrixHttpCommand<Response> extends BaseHystrixComman
     private HttpRequest initializeRequest() throws MalformedURLException {
         HttpRequest request = getRequest();
 
-        request.trustAllCerts();
-        request.trustAllHosts();
+        if (request != null) {
+            request.trustAllCerts();
+            request.trustAllHosts();
+        }
 
         return request;
     }
