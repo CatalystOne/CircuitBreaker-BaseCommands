@@ -13,8 +13,6 @@ import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
 
-import static no.cantara.base.util.StringHelper.hasContent;
-
 /**
  * Copy from https://github.com/Cantara/Whydah-Java-SDK
  * Created by baardl on 2017-03-03.
@@ -69,20 +67,15 @@ public abstract class BaseHttpPostHystrixCommand<R> extends HystrixCommand<R> {
             request.trustAllCerts();
             request.trustAllHosts();
 
-            String jsonBody = getJsonBody();
-            if (hasContent(jsonBody)) {
-                request.contentType(HttpSender.APPLICATION_JSON);
-                request = dealWithRequestBeforeSend(request);
-                request = request.send(jsonBody);
-                int statusCode = request.code();
-                log.info("Status Code {}. Request {}", statusCode, request);
-            } else if (getFormParameters() != null && !getFormParameters().isEmpty()) {
-//                request.contentType(HttpSender.APPLICATION_FORM_URLENCODED);
+            if (getFormParameters() != null && !getFormParameters().isEmpty()) {
+                request.contentType(HttpSender.APPLICATION_FORM_URLENCODED);
                 request.form(getFormParameters());
-                request = dealWithRequestBeforeSend(request);
             }
 
+            request = dealWithRequestBeforeSend(request);
+
             responseBody = request.bytes();
+            byte[] responseBodyCopy = responseBody.clone();
             int statusCode = request.code();
             log.debug("Headers {}", request.headers());
             String responseAsText = StringConv.UTF8(responseBody);
@@ -149,6 +142,7 @@ public abstract class BaseHttpPostHystrixCommand<R> extends HystrixCommand<R> {
     protected R dealWithResponse(String response) {
         return (R) response;
     }
+
 
     @Override
     protected R getFallback() {
