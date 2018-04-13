@@ -111,6 +111,9 @@ public abstract class BaseHttpPostHystrixCommand<R> extends HystrixCommand<R> {
 
         //request.send("name=huydo")
         //or something like
+        if (getJsonBody() != null) {
+            request.contentType("application/json").send(getJsonBody());
+        }
         //request.contentType("application/json").send(applicationJson);
 
         return request;
